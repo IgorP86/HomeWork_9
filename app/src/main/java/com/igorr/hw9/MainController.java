@@ -1,6 +1,7 @@
 package com.igorr.hw9;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,7 @@ public class MainController extends AppCompatActivity implements MyActionListene
 
         note = new Note();
         ////
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 8; i++) {
             String[] data = {"Surname " + i, "Name" + i, "patronymic" + i, "45818" + Integer.toString(i)};
             note.getActions().addNote(data[0], data[1], data[2], data[3]);
 
@@ -87,27 +88,35 @@ public class MainController extends AppCompatActivity implements MyActionListene
     }
 
     @Override
-    public void replaceItem(int itemID, String[] args) {
-       // new DataOperations().setArguments();
-        String[] args;
-        this.note.getActions().getNote(note.getActions().searchItemOnID(itemID));
+    public void overwriteItem(String[] args) {
+
+    }
+
+    @Override
+    public void representItem(int position) {
+        Note.PersonItem tempItem = note.getActions().getNote(position);
+        Fragment tempFrag = new DataOperations();
+        Bundle id = new Bundle();
+        id.putString("name", tempItem.getName());
+        tempFrag.setArguments(id);
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.contentView, tempFrag, DATA_OPERATIONS);
+        transaction.addToBackStack(null).commit();
+
     }
 
     @Override
     public void deleteItem(int itemID) {
-        this.note.getActions().removeItemOnID(itemID);
+        this.note.getActions().removeItem(itemID);
         updateUI(R.string.CARD_VIEW);
     }
 
     @Override
-    public void callDialog(int itemID, View... views) {
+    public void callDialog(int position) {
         DialogActionSelect dialog = new DialogActionSelect();
         Bundle id = new Bundle();
-        id.putInt("itemID",itemID);
+        id.putInt("position", position);
         dialog.setArguments(id);
         dialog.show(fragmentManager, "tag");
-
     }
-
-
 }

@@ -13,18 +13,12 @@ public class Note {
 
     public class PersonItem {
         private String surname, name, patronymic, phoneNumber;
-        private int id;
 
         private PersonItem(String surname, String name, String patronymic, String phoneNumber) {
             this.surname = surname;
             this.name = name;
             this.patronymic = patronymic;
             this.phoneNumber = phoneNumber;
-            this.id = ++ID;
-        }
-
-        public int getId() {
-            return id;
         }
 
         public String getName() {
@@ -42,6 +36,10 @@ public class Note {
         public String getSurname() {
             return surname;
         }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 
 
@@ -52,34 +50,23 @@ public class Note {
             personList.add(new PersonItem(fields[0], fields[1], fields[2], fields[3]));
         }
 
-        /**
-         *
-         * @param index in the ArrayList
-         * @return ref. of the PersonItem
-         */
-        public PersonItem getNote(int index) {
-            return personList.get(index);
+        public PersonItem getNote(int position) {
+            return personList.get(position);
         }
 
-        /** Search on ID
-         *  @return  sequence number of item
-         */
-        public int searchItemOnID(int itemID) {
-            int i;
-            for (i = 0; i < getNoteSize(); i++) {
-                if (itemID == getNote(i).getId()) {
-                    break;
-                }
-            }
-            return i;
-        }
-
-        public void removeItemOnID(int itemID) {
-            personList.remove(searchItemOnID(itemID));
+        public void removeItem(int position) {
+            personList.remove(position);
         }
 
         public int getNoteSize() {
             return personList.size();
+        }
+
+        public void overwriteItem(int position, String name) {
+            if(name != null && !name.equals(" ")){
+                personList.get(position).setName(name);
+            }
+
         }
     }
 

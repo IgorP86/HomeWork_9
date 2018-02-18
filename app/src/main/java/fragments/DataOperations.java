@@ -29,6 +29,7 @@ public class DataOperations extends Fragment {
     private MyActionListener myActionListener;
     private View view;
     private Unbinder unbinder;
+    private static boolean OVERWRITE = false;   //for write?
 
     @BindViews({R.id.inputSurname, R.id.inputName, R.id.inputPatronymic, R.id.inputPhone})
     TextView[] inputFields;
@@ -63,8 +64,12 @@ public class DataOperations extends Fragment {
         actionBar.setDisplayHomeAsUpEnabled(true);
         unbinder = ButterKnife.bind(this, this.view);
 
-        //TextView ini
-
+        Bundle args = getArguments();
+        //Initialization
+        if (args != null) {
+            inputFields[1].setText(args.getString("name"));
+            OVERWRITE = !OVERWRITE;
+        }
     }
 
     @Override
@@ -86,7 +91,12 @@ public class DataOperations extends Fragment {
         //clear fields
         for (TextView inputField : inputFields)
             inputField.setText("");
-
+/*
+        if(OVERWRITE){
+            //выполнить замену
+            myActionListener.overwriteItem(args);
+            OVERWRITE = !OVERWRITE;
+        }*/
         myActionListener.addItem(args);
         myActionListener.updateUI(R.string.CARD_VIEW);
     }

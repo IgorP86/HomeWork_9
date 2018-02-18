@@ -39,7 +39,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> 
 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
-        holder.setId(data.getActions().getNote(position).getId());
+        holder.setPosition(position);
         holder.name.setText(data.getActions().getNote(position).getName());
     }
 
@@ -51,11 +51,11 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> 
 
     public class MyHolder extends RecyclerView.ViewHolder {
         TextView name;
-        int id;
+        int position;
         float x = 0;
 
-        void setId(int id) {
-            this.id = id;
+        void setPosition(int position) {
+            this.position = position;
         }
 
         public MyHolder(View itemView) {
@@ -65,7 +65,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myActionListener.callDialog(id);
+                    myActionListener.callDialog(position);
                 }
             });
 
@@ -79,7 +79,7 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> 
                         float x2 = event.getX();
                         Log.d("delta", Float.toString(x2 - x));
                         if (x2 - x > 50) {
-                            myActionListener.deleteItem(id);
+                            myActionListener.deleteItem(position);
                         }
                     }
                     return false;

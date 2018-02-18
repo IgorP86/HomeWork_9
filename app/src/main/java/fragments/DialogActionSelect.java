@@ -6,12 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Toast;
 
 import com.igorr.hw9.MyActionListener;
 import com.igorr.hw9.R;
@@ -22,7 +19,7 @@ import com.igorr.hw9.R;
 
 public class DialogActionSelect extends DialogFragment {
     private MyActionListener myActionListener;
-    private int itemID;
+    private int position;
 
     @Override
     public void onAttach(Context context) {
@@ -40,17 +37,17 @@ public class DialogActionSelect extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        itemID = getArguments().getInt("itemID");
+        position = getArguments().getInt("position");
 
-        builder.setView(inflater.inflate(R.layout.action_dialog, null)).setMessage(R.string.chooseAction)
+         builder.setView(inflater.inflate(R.layout.action_dialog, null)).setMessage(R.string.chooseAction)
                 .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        myActionListener.deleteItem(itemID);
+                        myActionListener.deleteItem(position);
                     }
                 })
                 .setNegativeButton(R.string.rename, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-
+                        myActionListener.representItem(position);
                     }
                 });
         return builder.create();

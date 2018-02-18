@@ -11,9 +11,11 @@ public interface MyActionListener {
 
     void addItem(String[] args);
 
-    void replaceItem(int itemID, String[] args);
+    void overwriteItem(String[] args);
+
+    void representItem(int position);
 
     void deleteItem(int itemID);
 
-    void callDialog(int itemID, View... views);
+    void callDialog(int itemID);
 }
