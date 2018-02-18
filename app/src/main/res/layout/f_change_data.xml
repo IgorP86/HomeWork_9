@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/inputSurname"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="10dp"
+        android:hint="Фамилия"
+        android:inputType="textPersonName"
+        app:layout_insetEdge="top" />
+
+    <EditText
+        android:id="@+id/inputName"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center|top"
+        android:hint="Имя"
+        android:inputType="textPersonName"
+        app:layout_dodgeInsetEdges="all" />
+
+    <EditText
+        android:id="@+id/inputPatronymic"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="40dp"
+        android:hint="Отчество"
+        android:inputType="textPersonName"
+        app:layout_dodgeInsetEdges="all" />
+
+    <EditText
+        android:id="@+id/inputPhone"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="80dp"
+        android:hint="Номер телефона"
+        android:inputType="phone"
+        app:layout_dodgeInsetEdges="all" />
+
+    <Button
+        android:id="@+id/addNote"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="140dp"
+        android:text="Добавить запись"
+        android:textAlignment="center"
+        app:layout_dodgeInsetEdges="all" />
+
+    <Button
+        android:id="@+id/getNote"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:layout_marginTop="185dp"
+        android:text="Получить запись"
+        android:textAlignment="center"
+        app:layout_dodgeInsetEdges="all" />
+</android.support.design.widget.CoordinatorLayout>

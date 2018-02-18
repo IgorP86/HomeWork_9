@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">HW9</string>
+    <string name="addContact">Добавить контакт</string>
+    <string name="noData">нет данных</string>
+    <string name="CARD_VIEW">card view</string>
+    <string name="DATA_OPERATIONS">data operations</string>
+    <string name="rename">Изменить</string>
+    <string name="delete">Удалить</string>
+    <string name="chooseAction">Выберите дальнейшее действие</string>
+</resources>
