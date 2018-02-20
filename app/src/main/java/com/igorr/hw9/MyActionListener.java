@@ -7,15 +7,17 @@ import android.view.View;
  */
 
 public interface MyActionListener {
+    void representItem();
+
+    void deleteItem();
+
+    void callDialog();
+
+    void setSelectedItem(int position);
+
     void updateUI(int resUI);
 
     void addItem(String[] args);
 
     void overwriteItem(String[] args);
-
-    void representItem(int position);
-
-    void deleteItem(int itemID);
-
-    void callDialog(int itemID);
 }

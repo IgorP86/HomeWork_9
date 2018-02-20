@@ -19,7 +19,6 @@ import com.igorr.hw9.R;
 
 public class DialogActionSelect extends DialogFragment {
     private MyActionListener myActionListener;
-    private int position;
 
     @Override
     public void onAttach(Context context) {
@@ -37,17 +36,15 @@ public class DialogActionSelect extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        position = getArguments().getInt("position");
-
-         builder.setView(inflater.inflate(R.layout.action_dialog, null)).setMessage(R.string.chooseAction)
-                .setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+        builder.setView(inflater.inflate(R.layout.action_dialog, null)).
+                setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        myActionListener.deleteItem(position);
+                        myActionListener.deleteItem();
                     }
                 })
                 .setNegativeButton(R.string.rename, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        myActionListener.representItem(position);
+                        myActionListener.representItem();
                     }
                 });
         return builder.create();

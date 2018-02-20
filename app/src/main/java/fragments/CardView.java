@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.igorr.hw9.MyActionListener;
 import com.igorr.hw9.R;
@@ -33,7 +35,8 @@ public class CardView extends Fragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
-
+    @BindView((R.id.text))
+    TextView textView;
 
     @Override
     public void onAttach(Context context) {
@@ -45,14 +48,6 @@ public class CardView extends Fragment {
         }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        setHasOptionsMenu(true);
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,12 +57,18 @@ public class CardView extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Список контактов");
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setTitle(R.string.scrollList);
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        setHasOptionsMenu(true);
         unbinder = ButterKnife.bind(this, this.view);
 
-        PersonAdapter personAdapter = new PersonAdapter(this, new Note());
+        PersonAdapter personAdapter = new PersonAdapter(this);
         recyclerView.setAdapter(personAdapter);
 
+        if (Note.Actions.getNoteSize() == 0) {
+            textView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

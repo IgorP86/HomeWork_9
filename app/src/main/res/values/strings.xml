@@ -7,4 +7,13 @@
     <string name="rename">Изменить</string>
     <string name="delete">Удалить</string>
     <string name="chooseAction">Выберите дальнейшее действие</string>
+    <string name="name">Имя</string>
+    <string name="phoneNum">Номер телефона</string>
+    <string name="patronymic">Отчество</string>
+    <string name="surname">Фамилия</string>
+    <string name="scrollList">Список контактов</string>
+    <string name="overwrite">Заменить</string>
+    <string name="newContact">Добавить новый контакт</string>
+    <string name="overwriteContact">Изменить контакт</string>
+    <string name="listIsEmpty">Список пуст</string>
 </resources>

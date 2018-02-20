@@ -8,10 +8,9 @@ import java.util.List;
  */
 
 public class Note {
-    public static List<PersonItem> personList = new ArrayList<>();
-    private static int ID = 0;
+    private static List<PersonItem> personList = new ArrayList<>();
 
-    public class PersonItem {
+    public static class PersonItem {
         private String surname, name, patronymic, phoneNumber;
 
         private PersonItem(String surname, String name, String patronymic, String phoneNumber) {
@@ -37,40 +36,49 @@ public class Note {
             return surname;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        private void setName(String s) {
+            name = s;
+        }
+
+        private void setSurname(String s) {
+            surname = s;
+        }
+
+        private void setPatronymic(String s) {
+            patronymic = s;
+        }
+
+        private void setPhoneNumber(String s) {
+            phoneNumber = s;
         }
     }
 
-
-    public class NoteActions {
-        public void addNote(String... args) {
-            String[] fields = {" ", " ", " ", " "};
-            System.arraycopy(args, 0, fields, 0, args.length);
-            personList.add(new PersonItem(fields[0], fields[1], fields[2], fields[3]));
+    public static class Actions {
+        public static void addNote(String[] args) {
+            if (args != null) {
+                personList.add(new PersonItem(args[0], args[1], args[2], args[3]));
+            }
         }
 
-        public PersonItem getNote(int position) {
+        public static PersonItem getNote(int position) {
             return personList.get(position);
         }
 
-        public void removeItem(int position) {
+        public static void removeItem(int position) {
             personList.remove(position);
         }
 
-        public int getNoteSize() {
+        public static int getNoteSize() {
             return personList.size();
         }
 
-        public void overwriteItem(int position, String name) {
-            if(name != null && !name.equals(" ")){
-                personList.get(position).setName(name);
+        public static void overwriteItem(int position, String[] args) {
+            if (args != null) {
+                personList.get(position).setSurname(args[0]);
+                personList.get(position).setName(args[1]);
+                personList.get(position).setPatronymic(args[2]);
+                personList.get(position).setPhoneNumber(args[3]);
             }
-
         }
-    }
-
-    public NoteActions getActions() {
-        return new NoteActions();
     }
 }

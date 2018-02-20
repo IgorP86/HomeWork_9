@@ -11,11 +11,13 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.igorr.hw9.MyActionListener;
 import com.igorr.hw9.R;
 
+import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -29,10 +31,13 @@ public class DataOperations extends Fragment {
     private MyActionListener myActionListener;
     private View view;
     private Unbinder unbinder;
-    private static boolean OVERWRITE = false;   //for write?
+    private static boolean OVERWRITE = false;
+    private static String[] KEYS = {"surname", "name", "patronymic", "phone"};
 
     @BindViews({R.id.inputSurname, R.id.inputName, R.id.inputPatronymic, R.id.inputPhone})
     TextView[] inputFields;
+    @BindView(R.id.btnAddNote)
+    Button btnAddNote;
 
     @Override
     public void onAttach(Context context) {
@@ -44,11 +49,6 @@ public class DataOperations extends Fragment {
         }
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
     @Nullable
     @Override
@@ -59,16 +59,23 @@ public class DataOperations extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        actionBar.setTitle("Добавление/Изменение данных");
-        actionBar.setDisplayHomeAsUpEnabled(true);
         unbinder = ButterKnife.bind(this, this.view);
+
+        ActionBar actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        setHasOptionsMenu(true);
 
         Bundle args = getArguments();
         //Initialization
         if (args != null) {
-            inputFields[1].setText(args.getString("name"));
-            OVERWRITE = !OVERWRITE;
+            actionBar.setTitle(R.string.overwriteContact);
+            for (int i = 0; i < inputFields.length; i++) {
+                inputFields[i].setText((args.getString(KEYS[i])));
+            }
+            OVERWRITE = true;
+            btnAddNote.setText(R.string.overwrite);
+        } else {
+            actionBar.setTitle(R.string.addContact);
         }
     }
 
@@ -80,31 +87,22 @@ public class DataOperations extends Fragment {
         return true;
     }
 
-    //buttons
-    @OnClick(R.id.addNote)
+    //добавить запись или выполнить замену если флаг установлен
+    @OnClick(R.id.btnAddNote)
     protected void btnClickAddNote() {
-        //get data from fields
+        //сбор данных
         String[] args = new String[inputFields.length];
         for (int i = 0; i < inputFields.length; i++)
             args[i] = inputFields[i].getText().toString();
 
-        //clear fields
-        for (TextView inputField : inputFields)
-            inputField.setText("");
-/*
-        if(OVERWRITE){
-            //выполнить замену
-            myActionListener.overwriteItem(args);
-            OVERWRITE = !OVERWRITE;
-        }*/
-        myActionListener.addItem(args);
-        myActionListener.updateUI(R.string.CARD_VIEW);
-    }
 
-    //for tests
-    @OnClick(R.id.getNote)
-    protected void refresh() {
-        myActionListener.updateUI(R.string.DATA_OPERATIONS);
+        if (OVERWRITE) {
+            myActionListener.overwriteItem(args);
+            OVERWRITE = false;
+        } else {
+            myActionListener.addItem(args);
+        }
+        myActionListener.updateUI(R.string.CARD_VIEW);
     }
 
     @Override

@@ -6,8 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 
 import butterknife.BindView;
 import fragments.CardView;
@@ -19,7 +17,7 @@ public class MainController extends AppCompatActivity implements MyActionListene
     private static final String CARD_VIEW = "cardView";
     private static final String DATA_OPERATIONS = "changeData";
     private FragmentManager fragmentManager;
-    private Note note;
+    private static int selectedPos;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -29,33 +27,14 @@ public class MainController extends AppCompatActivity implements MyActionListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_controller);
         fragmentManager = getSupportFragmentManager();
-        Log.d("sss", "onCreate");
 
-        note = new Note();
-        ////
-        for (int i = 0; i < 8; i++) {
-            String[] data = {"Surname " + i, "Name" + i, "patronymic" + i, "45818" + Integer.toString(i)};
-            note.getActions().addNote(data[0], data[1], data[2], data[3]);
-
-        }
-        if (savedInstanceState != null)
-            updateUI(savedInstanceState.getInt("resUI"));
-        else
+        if (fragmentManager.getFragments().size() == 0) {
             updateUI(R.string.CARD_VIEW);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (fragmentManager.findFragmentByTag(CARD_VIEW) != null) {
-            if (fragmentManager.findFragmentByTag(CARD_VIEW).isVisible()) {
-                outState.putInt("resUI", R.string.CARD_VIEW);
-            }
-        } else if (fragmentManager.findFragmentByTag(DATA_OPERATIONS) != null) {
-            if (fragmentManager.findFragmentByTag(DATA_OPERATIONS).isVisible()) {
-                outState.putInt("resUI", R.string.DATA_OPERATIONS);
-            }
         }
+/*        for (int i = 0; i < 8; i++) {
+            String[] data = {"Surname " + i, "Name " + i, "patronymic " + i, "8900999900" + Integer.toString(i)};
+            Note.Actions.addNote(data);
+        }*/
     }
 
     @Override
@@ -79,44 +58,53 @@ public class MainController extends AppCompatActivity implements MyActionListene
                 transaction.replace(R.id.contentView, new DataOperations(), DATA_OPERATIONS);
                 break;
         }
-        transaction.addToBackStack(null).commit();
+        transaction.commit();
     }
 
     @Override
     public void addItem(String[] args) {
-        new Note().getActions().addNote(args[0], args[1], args[2], args[3]);
+        Note.Actions.addNote(args);
     }
 
     @Override
     public void overwriteItem(String[] args) {
-
+        Note.Actions.overwriteItem(selectedPos, args);
     }
 
     @Override
-    public void representItem(int position) {
-        Note.PersonItem tempItem = note.getActions().getNote(position);
+    public void representItem() {
+        Note.PersonItem tempItem = Note.Actions.getNote(selectedPos);
         Fragment tempFrag = new DataOperations();
-        Bundle id = new Bundle();
-        id.putString("name", tempItem.getName());
-        tempFrag.setArguments(id);
+
+        Bundle bundle = new Bundle();
+
+        String[] keys = {"surname", "name", "patronymic", "phone"};
+        bundle.putString(keys[0], tempItem.getSurname());
+        bundle.putString(keys[1], tempItem.getName());
+        bundle.putString(keys[2], tempItem.getPatronymic());
+        bundle.putString(keys[3], tempItem.getPhoneNumber());
+        tempFrag.setArguments(bundle);
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.contentView, tempFrag, DATA_OPERATIONS);
-        transaction.addToBackStack(null).commit();
+        transaction.commit();
 
     }
 
     @Override
-    public void deleteItem(int itemID) {
-        this.note.getActions().removeItem(itemID);
+    public void deleteItem() {
+        Note.Actions.removeItem(selectedPos);
         updateUI(R.string.CARD_VIEW);
     }
 
     @Override
-    public void callDialog(int position) {
+    public void callDialog() {
         DialogActionSelect dialog = new DialogActionSelect();
-        Bundle id = new Bundle();
-        id.putInt("position", position);
-        dialog.setArguments(id);
         dialog.show(fragmentManager, "tag");
+    }
+
+    @Override
+    public void setSelectedItem(int position) {
+        selectedPos = position;
     }
 }

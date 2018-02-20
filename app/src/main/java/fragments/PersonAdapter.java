@@ -20,11 +20,8 @@ import model.Note;
 
 public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> {
     private MyActionListener myActionListener;
-    private Note data;
 
-
-    public PersonAdapter(Fragment fragment, Note note) {
-        data = note;
+    public PersonAdapter(Fragment fragment) {
         try {
             myActionListener = (MyActionListener) fragment.getContext();
         } catch (Exception e) {
@@ -40,32 +37,44 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> 
     @Override
     public void onBindViewHolder(MyHolder holder, int position) {
         holder.setPosition(position);
-        holder.name.setText(data.getActions().getNote(position).getName());
+        holder.surname.setText("ф: ".concat(Note.Actions.getNote(position).getSurname()));
+        holder.name.setText("и: ".concat(Note.Actions.getNote(position).getName()));
+        holder.patronymic.setText("о: ".concat(Note.Actions.getNote(position).getPatronymic()));
+        holder.number.setText("тел: ".concat(Note.Actions.getNote(position).getPhoneNumber()));
     }
 
     @Override
     public int getItemCount() {
-        return data.getActions().getNoteSize();
+        return Note.Actions.getNoteSize();
     }
 
 
-    public class MyHolder extends RecyclerView.ViewHolder {
-        TextView name;
-        int position;
+    class MyHolder extends RecyclerView.ViewHolder {
+        private TextView name;
+        private TextView surname;
+        private TextView patronymic;
+        private TextView number;
+
+        private int position;
         float x = 0;
 
         void setPosition(int position) {
             this.position = position;
         }
 
-        public MyHolder(View itemView) {
+        private MyHolder(View itemView) {
             super(itemView);
+
+            surname = itemView.findViewById(R.id.outSurname);
             name = itemView.findViewById(R.id.outName);
+            patronymic = itemView.findViewById(R.id.outPatronymic);
+            number = itemView.findViewById(R.id.outNumber);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    myActionListener.callDialog(position);
+                    myActionListener.setSelectedItem(position);
+                    myActionListener.callDialog();
                 }
             });
 
@@ -79,7 +88,8 @@ public class PersonAdapter extends RecyclerView.Adapter<PersonAdapter.MyHolder> 
                         float x2 = event.getX();
                         Log.d("delta", Float.toString(x2 - x));
                         if (x2 - x > 50) {
-                            myActionListener.deleteItem(position);
+                            myActionListener.setSelectedItem(position);
+                            myActionListener.deleteItem();
                         }
                     }
                     return false;
